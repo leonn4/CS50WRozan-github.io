@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Single Page</title>
+    </head>
+    <style>
+        /* Tambahkan gaya CSS jika diperlukan */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+        }
+        #content {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <body>
+        <h1>Single Page Application</h1>
+        
+        <!-- Tombol untuk memilih section -->
+        <button onclick="showSection(1)">Section 1</button>
+        <button onclick="showSection(2)">Section 2</button>
+        <button onclick="showSection(3)">Section 3</button>
+
+        <!-- Area untuk menampilkan konten section -->
+        <div id="content">Select a section to view its content</div>
+        
+        <script>
+            function showSection(section) {
+                fetch(`/sections/${section}`)
+                .then(response => response.text())
+                .then(text => {
+                    console.log(text);
+                    document.querySelector('#content').innerHTML = text;
+                });
+            }
+        </script>
+    </body>
+</html>
