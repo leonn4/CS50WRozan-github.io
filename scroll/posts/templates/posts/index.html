@@ -1,51 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Scroll Page</title>
-        <script>
-            // <script to show the post>
+    <head><title>Scroll page</title>
+        <style>
+            /* Style for post container */
+            #posts {
+                width: 60%;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+            }
 
-            // start with first post
-            let counter = 1;
+            /* Style for individual posts */
+            .post {
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+            }
 
-            // decide quantity of the post that show up
-            const quantity = 20;
+            /* Style for post hover effect */
+            .post:hover {
+                background-color: #f0f8ff;
+                border-color: #a9d6e5;
+                transition: background-color 0.3s, border-color 0.3s;
+            }
+        </style>
+    <script>
+        // First post
+        let counter = 1;
 
-            // When DOM loads, render the first 20 post
-            document.addEventListener('DOMContentLoaded',load);
+        // Post quantity setting
+        const quantity =20;
 
-            // Load next set of posts
-            function load() {
-                
-                // set start and end post number, and update the counter
-                const start = counter;
-                const end = start + quantity -1;
-                counter = end +1;
+        // DOM loads
+        document.addEventListener('DOMContentLoaded', load); 
 
-                // Get new posts and add posts
-                fetch(`/posts?start=${start}&end=${end}`)
-                .then(response => response.json())
-                .then(data => {
-                    data.posts.foEach(add_post);
-                })
-            };
+        //scroll function to connect to load
+        window.onscroll = () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                load();
+            }
+        }
+        
+        //<Load function>
+        function load() {
 
-            // Add a new post with given contents to DOM
-            function add_post(contents) {
+            // Set start and end post number, and update counter
+            const start = counter;
+            const end = start + quantity - 1;
+            counter = end + 1;
 
-                //create new post
-                const post = document.createElement('div');
-                post.className = 'post';
-                post.innerHTML = contents;
+            // Get new posts and add posts
+            fetch(`/posts?start=${start}&end=${end}`)
+            .then(response => response.json())
+            .then(data => {
+                data.posts.forEach(add_post);
+            })
+        };
+        //<Load function>
 
-                //add post to DOM
-                document.querySelector('#posts').append(post);
-            };
+        // Add a new post with given contents to DOM
+        function add_post(contents) {
+            
+            // Create new post
+            const post = document.createElement('div');
+            post.className = 'post';
+            post.innerHTML = contents;
+
+            // Add post to DOM
+            document.querySelector('#posts').append(post);
+        }
         </script>
-    </head>
-    <body>
-        <div id="posts">
 
-        </div>
-    </body>
+</head>
+
+<body>
+    <div id="posts">
+    </div>
+</body>
 </html>
