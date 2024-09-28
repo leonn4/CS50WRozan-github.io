@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Scroll Page</title>
+        <script>
+            // <script to show the post>
+
+            // start with first post
+            let counter = 1;
+
+            // decide quantity of the post that show up
+            const quantity = 20;
+
+            // When DOM loads, render the first 20 post
+            document.addEventListener('DOMContentLoaded',load);
+
+            // Load next set of posts
+            function load() {
+                
+                // set start and end post number, and update the counter
+                const start = counter;
+                const end = start + quantity -1;
+                counter = end +1;
+
+                // Get new posts and add posts
+                fetch(`/posts?start=${start}&end=${end}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.posts.foEach(add_post);
+                })
+            };
+
+            // Add a new post with given contents to DOM
+            function add_post(contents) {
+
+                //create new post
+                const post = document.createElement('div');
+                post.className = 'post';
+                post.innerHTML = contents;
+
+                //add post to DOM
+                document.querySelector('#posts').append(post);
+            };
+        </script>
+    </head>
+    <body>
+        <div id="posts">
+
+        </div>
+    </body>
+</html>
