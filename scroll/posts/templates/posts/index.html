@@ -39,11 +39,17 @@
         document.addEventListener('DOMContentLoaded', load); 
 
         //scroll function to connect to load
+        let debounceTimer;
+
         window.onscroll = () => {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-                load();
-            }
-        }
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                    load();
+                }
+            }, 200);  // Debounce delay (200ms)
+        };
+
         
         //<Load function>
         function load() {
