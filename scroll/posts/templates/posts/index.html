@@ -2,6 +2,16 @@
 <html lang="en">
     <head><title>Scroll page</title>
         <style>
+            @keyframes hide {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+
+            }
+
             /* Style for post container */
             #posts {
                 width: 80%;
@@ -20,6 +30,11 @@
                 box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
                 border-radius: 5px;
                 font-weight: bold;
+                animation-name: hide;
+                animation-duration: 2s;
+                animation-fill-mode: forwards;
+                animation-play-state: paused;
+
             }
 
             /* Style for post hover effect */
@@ -69,7 +84,10 @@
         document.addEventListener('click', event => {
             const element = event.target;
             if (element.className === 'hide') {
-                element.parentElement.remove();
+                element.parentElement.style.animationPlayState = 'running';
+                element.parentElement.addEventListener('animationend', () => {
+                    element.parentElement.remove();
+                })
             }
         })
         
