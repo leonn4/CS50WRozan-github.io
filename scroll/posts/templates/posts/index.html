@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><title>Scroll page</title>
+        <style>
+            @keyframes hide {
+                0% {
+                    opacity: 1;
+                    height: 100%;
+                    line-height: 100%;
+                    padding: 15px;
+                    margin-bottom: 20px;
+                }
+                75% {
+                    opacity: 0;
+                    height: 100%;
+                    line-height: 100%;
+                    padding: 15px;
+                    margin-bottom: 20px;
+                }
+                100% {
+                    opacity: 0;
+                    height: 0px;
+                    line-height: 0px;
+                    padding: 0px;
+                    margin-bottom: 0px;
+                }
+
+            }
+
+            /* Style for post container */
+            #posts {
+                width: 80%;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+            }
+
+            /* Style for individual posts */
+            .post {
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: #1e8a14c4;
+                border: 1px solid #ccc;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+                font-weight: bold;
+                animation-name: hide;
+                animation-duration: 2s;
+                animation-fill-mode: forwards;
+                animation-play-state: paused;
+
+            }
+
+            /* Style for post hover effect */
+            .post:hover {
+                background-color: #95c2eb;
+                border-color: #a9d6e5;
+                transition: background-color 0.3s, border-color 0.3s;
+            }
+            .hide {
+                margin-left: 90%;  /* Tetap menggunakan margin-left */
+                width: 100px;  /* Memperbesar lebar elemen */
+                padding: 5px;  /* Menambah padding untuk memberikan ruang di dalam */
+                background-color: #f0f0f0;  /* Menjaga warna latar belakang tetap netral */
+                border: 1px solid #ccc;  /* Border tetap ringan dan netral */
+                box-sizing: border-box;  /* Memastikan padding tidak mempengaruhi ukuran total */
+            }
+            .hide:hover {
+                background-color: #ff0000;
+                border-color: #a9d6e5;  
+                transition: background-color 0.3s, border-color 0.3s;
+            }
+
+        </style>
+    <script>
+        // First post
+        let counter = 1;
+
+        // Post quantity setting
+        const quantity =20;
+
+        // DOM loads
+        document.addEventListener('DOMContentLoaded', load); 
+
+        //scroll function to connect to load
+        let debounceTimer;
+
+        window.onscroll = () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                    load();
+                }
+            }, 200);  // Debounce delay (200ms)
+        };
+
+        // function hide button
+        document.addEventListener('click', event => {
+            const element = event.target;
+            if (element.className === 'hide') {
+                element.parentElement.style.animationPlayState = 'running';
+                element.parentElement.addEventListener('animationend', () => {
+                    element.parentElement.remove();
+                })
+            }
+        })
+        
+        //<Load function>
+        function load() {
+
+            // Set start and end post number, and update counter
+            const start = counter;
+            const end = start + quantity - 1;
+            counter = end + 1;
+
+            // Get new posts and add posts
+            fetch(`/posts?start=${start}&end=${end}`)
+            .then(response => response.json())
+            .then(data => {
+                data.posts.forEach(add_post);
+            })
+        };
+        //<Load function>
+
+        // Add a new post with given contents to DOM
+        function add_post(contents) {
+            
+            // Create new post
+            const post = document.createElement('div');
+            post.className = 'post';
+            post.innerHTML = `${contents} <button class="hide">Hide</button>`;
+
+            // Add post to DOM
+            document.querySelector('#posts').append(post);
+        }
+        </script>
+
+</head>
+
+<body>
+    <div id="posts">
+    </div>
+</body>
+</html>
