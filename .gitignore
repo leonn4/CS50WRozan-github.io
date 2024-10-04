@@ -1,4 +1,30 @@
+# Bytecode Python
 *.pyc
 __pycache__/
+
+# Virtual Environment
+venv/
+env/
+
+# Environment Variables
 .env
-*.pyc
+
+# Django static files
+static/
+
+# Django media files (user uploads)
+media/
+
+# Django SQLite database
+db.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# OS generated files
+.DS_Store
+Thumbs.db
